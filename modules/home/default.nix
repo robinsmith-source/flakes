@@ -1,86 +1,63 @@
 { pkgs, username, ... }: {
-  imports = [
-    ./shell.nix
-    ./neovim.nix
-    ./apps.nix
-    ./development.nix
-  ];
-
   home = {
-    username      = username;
+    username     = username;
     homeDirectory = "/home/${username}";
-    # Do NOT change stateVersion after first install
     stateVersion  = "24.11";
   };
 
   programs.home-manager.enable = true;
+  xdg.enable = true;
 
-  # XDG base dirs + user directories
-  xdg = {
-    enable = true;
-    userDirs = {
-      enable = true;
-      createDirectories = true;
-    };
-  };
-
-  # GTK theming
+  # ── GTK ────────────────────────────────────────────────────────────────────
   gtk = {
-    enable = true;
-    theme = {
-      name    = "adw-gtk3-dark";
-      package = pkgs.adw-gtk3;
-    };
-    iconTheme = {
-      name    = "Papirus-Dark";
-      package = pkgs.papirus-icon-theme;
-    };
-    cursorTheme = {
-      name    = "Adwaita";
-      size    = 24;
-      package = pkgs.adwaita-icon-theme;
-    };
+    enable    = true;
+    theme      = { name = "adw-gtk3-dark";  package = pkgs.adw-gtk3; };
+    iconTheme  = { name = "Papirus-Dark";   package = pkgs.papirus-icon-theme; };
+    cursorTheme = { name = "Adwaita"; size = 24; package = pkgs.adwaita-icon-theme; };
   };
-
-  # Prefer dark mode in apps that respect this
   dconf.settings."org/gnome/desktop/interface".color-scheme = "prefer-dark";
 
-  # Noctalia shell — home-manager configuration
-  programs.noctalia-shell = {
+  # ── Terminal ───────────────────────────────────────────────────────────────
+  programs.alacritty = {
     enable = true;
-    # Start Noctalia as a systemd user service after graphical-session.target
-    systemd.enable = true;
     settings = {
-      # General appearance
-      general = {
-        blur   = true;
-        shadow = true;
-        # Radius applied to panels and popups
-        radius = 12;
+      font = {
+        normal.family = "JetBrainsMono Nerd Font";
+        size = 12.0;
       };
-      # Top bar
-      bar = {
-        position = "top";
-        # "compact" | "normal" | "expanded"
-        density  = "normal";
-      };
-      # App launcher / search
-      launcher = {
-        terminal = "alacritty";
-        # Show clipboard history in launcher
-        clipboard.enable = true;
-      };
-      # Notifications
-      notifications = {
-        # Timeout in ms per urgency level
-        timeout.low      = 5000;
-        timeout.normal   = 8000;
-        timeout.critical = 0;  # persistent
-        markdown         = true;
-      };
+      window.opacity = 0.95;
     };
   };
 
-  # Niri window manager config
+  # ── Shell ──────────────────────────────────────────────────────────────────
+  programs.zsh = {
+    enable                    = true;
+    enableCompletion          = true;
+    autosuggestion.enable     = true;
+    syntaxHighlighting.enable = true;
+    shellAliases = {
+      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos/config#$(hostname)";
+    };
+  };
+
+  # ── Git ────────────────────────────────────────────────────────────────────
+  programs.git = {
+    enable    = true;
+    userName  = "Your Name";   # !! change me !!
+    userEmail = "your@email.com";
+    settings.init.defaultBranch = "main";
+  };
+
+  # ── Noctalia ───────────────────────────────────────────────────────────────
+  programs.noctalia-shell = {
+    enable         = true;
+    systemd.enable = true;
+    settings = {
+      bar.position      = "top";
+      launcher.terminal = "alacritty";
+    };
+  };
+
+  # ── Niri ───────────────────────────────────────────────────────────────────
   home.file.".config/niri/config.kdl".source = ../../config/niri/config.kdl;
 }

@@ -2,6 +2,9 @@
   # AMD CPU microcode updates
   hardware.cpu.amd.updateMicrocode = true;
 
+  # amd_pstate active mode — better power/perf scaling on Zen 3+
+  boot.kernelParams = [ "amd_pstate=active" ];
+
   # Load amdgpu early so the display is available from the first initrd screen.
   boot.initrd.kernelModules = [ "amdgpu" ];
   services.xserver.videoDrivers = [ "amdgpu" ];

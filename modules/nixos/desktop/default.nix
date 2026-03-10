@@ -12,7 +12,7 @@
   services.greetd = {
     enable = true;
     settings.default_session = {
-      command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --greeting 'Welcome' --cmd niri-session";
+      command = "${pkgs.tuigreet}/bin/tuigreet --time --greeting 'Welcome' --cmd niri-session";
       user = "greeter";
     };
   };
@@ -30,10 +30,7 @@
   # XDG portals — required for screen sharing, file pickers, etc.
   xdg.portal = {
     enable = true;
-    extraPortals = with pkgs; [
-      xdg-desktop-portal-gtk
-    ];
-    config.niri.default = [ "gtk" ];
+    extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
   };
 
   # PAM keyring unlock on login

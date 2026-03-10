@@ -9,15 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # CachyOS kernel + packages (chaotic-nyx overlay)
-    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
-
-    # Neovim configured declaratively
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Noctalia shell (Quickshell-based desktop shell for niri)
     noctalia-qs = {
       url = "github:noctalia-dev/noctalia-qs";
@@ -30,7 +21,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, chaotic, nixvim, noctalia, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, noctalia, ... }@inputs:
     let
       # !! Change to your username !!
       username = "robin";
@@ -40,24 +31,20 @@
           inherit system;
           specialArgs = { inherit inputs username; };
           modules = [
-            chaotic.nixosModules.default
             home-manager.nixosModules.home-manager
             noctalia.nixosModules.default
             ./hosts/${hostname}
             ./modules/nixos/common.nix
-            ./modules/nixos/cachyos.nix
             ./modules/nixos/desktop
             ./modules/nixos/hardware/amd.nix
             {
               home-manager = {
                 useGlobalPkgs = true;
                 useUserPackages = true;
-                # Append ".backup" instead of failing when a file already exists.
                 backupFileExtension = "backup";
                 extraSpecialArgs = { inherit inputs username; };
                 users.${username} = {
                   imports = [
-                    nixvim.homeManagerModules.nixvim
                     noctalia.homeModules.default
                     ./modules/home
                   ];
@@ -71,6 +58,7 @@
       nixosConfigurations = {
         laptop  = mkSystem { hostname = "laptop"; };
         desktop = mkSystem { hostname = "desktop"; };
+        hyperv  = mkSystem { hostname = "hyperv"; };
       };
     };
 }
