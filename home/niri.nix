@@ -1,6 +1,4 @@
 { username, hostName, ... }: {
-  programs.niri.config = null;
-
   programs.noctalia-shell = {
     enable         = true;
     systemd.enable = true;

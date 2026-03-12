@@ -9,8 +9,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    niri.url = "github:sodiboo/niri-flake";
-
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -23,7 +21,7 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, niri, noctalia, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, noctalia, ... }@inputs:
     let
       system   = "x86_64-linux";
       username = "robin";
@@ -34,7 +32,6 @@
           specialArgs = { inherit inputs username; };
           modules = [
             deviceModule
-            niri.nixosModules.niri
             home-manager.nixosModules.home-manager
             {
               home-manager = {
