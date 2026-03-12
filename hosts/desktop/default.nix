@@ -13,7 +13,7 @@
 
   users.users.${username} = {
     isNormalUser = true;
-    shell        = pkgs.zsh;
+    shell        = pkgs.fish;
     extraGroups  = [ "wheel" "video" "audio" "networkmanager" "input" ];
   };
 

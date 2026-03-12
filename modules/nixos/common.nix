@@ -57,9 +57,8 @@
   services.gnome.gnome-keyring.enable = true;
 
   # ── Programs ─────────────────────────────────────────────────────────────
-  programs.zsh.enable   = true;
+  programs.fish.enable  = true;
   programs.dconf.enable = true;
-  environment.pathsToLink = [ "/share/zsh" ];
 
   # ── Fonts ────────────────────────────────────────────────────────────────
   fonts = {

@@ -340,23 +340,20 @@
   };
 
   # ── Shell ────────────────────────────────────────────────────────────────
-  programs.zsh = {
-    enable                    = true;
-    enableCompletion          = true;
-    autosuggestion.enable     = true;
-    syntaxHighlighting.enable = true;
-    shellAliases = {
-      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#$(hostname)";
+  programs.fish = {
+    enable = true;
+    shellAbbrs = {
+      rebuild = "sudo nixos-rebuild switch --flake /etc/nixos#(hostname)";
       ff      = "fastfetch";
     };
-    initExtra = ''
-      unsetopt BEEP
+    interactiveShellInit = ''
+      set -g fish_greeting
     '';
   };
 
   programs.starship = {
     enable = true;
-    enableZshIntegration = true;
+    enableFishIntegration = true;
   };
 
   # ── Git ──────────────────────────────────────────────────────────────────
