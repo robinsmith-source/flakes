@@ -3,9 +3,17 @@ let
   cfg = config.workstation.baseline;
 in
 {
+  imports = [ ./packages.nix ];
+
   options.workstation.baseline.enable = lib.mkEnableOption "Baseline workstation configuration";
 
   config = lib.mkIf cfg.enable {
+    #workstation.security.enable = lib.mkDefault true;
+    workstation.baseline.packages = {
+      tools = lib.mkDefault true;
+      dev = lib.mkDefault true;
+      apps = lib.mkDefault true;
+    };
     nixpkgs.config.allowUnfree = true;
 
     nix = {
@@ -13,62 +21,62 @@ in
       nixPath = [ "nixpkgs=${inputs.nixpkgs}" ];
       settings = {
         experimental-features = [ "nix-command" "flakes" ];
-        auto-optimise-store   = true;
-        trusted-users         = [ "root" "@wheel" ];
+        auto-optimise-store = true;
+        trusted-users = [ "root" "@wheel" ];
       };
       gc = {
         automatic = true;
-        dates     = "weekly";
-        options   = "--delete-older-than 7d";
+        dates = "weekly";
+        options = "--delete-older-than 7d";
       };
     };
 
     boot = {
       kernelPackages = pkgs.linuxPackages_latest;
-      kernelParams   = [ "quiet" "splash" "loglevel=3" ];
+      kernelParams = [ "quiet" "splash" "loglevel=3" ];
       plymouth.enable = true;
-      tmp.useTmpfs    = true;
+      tmp.useTmpfs = true;
     };
 
     hardware.enableAllFirmware = true;
 
-    time.timeZone      = "Europe/Berlin";
+    time.timeZone = "Europe/Berlin";
     i18n.defaultLocale = "en_US.UTF-8";
     i18n.supportedLocales = [ "en_US.UTF-8/UTF-8" "de_DE.UTF-8/UTF-8" ];
     console = {
-      font   = "Lat2-Terminus16";
+      font = "Lat2-Terminus16";
       keyMap = "us";
     };
 
     networking = {
       networkmanager.enable = true;
-      firewall.enable       = true;
+      firewall.enable = true;
     };
 
     hardware.bluetooth = {
-      enable      = true;
+      enable = true;
       powerOnBoot = true;
       settings.General.Experimental = true;
-      settings.Policy.AutoEnable    = true;
+      settings.Policy.AutoEnable = true;
     };
     services.blueman.enable = true;
 
     services.pulseaudio.enable = false;
-    security.rtkit.enable      = true;
+    security.rtkit.enable = true;
     services.pipewire = {
-      enable             = true;
-      alsa.enable        = true;
-      alsa.support32Bit  = true;
-      pulse.enable       = true;
+      enable = true;
+      alsa.enable = true;
+      alsa.support32Bit = true;
+      pulse.enable = true;
       wireplumber.enable = true;
     };
 
-    services.tailscale.enable         = true;
-    services.libinput.enable          = true;
-    services.upower.enable            = true;
+    services.tailscale.enable = true;
+    services.libinput.enable = true;
+    services.upower.enable = true;
     services.gnome.gnome-keyring.enable = true;
 
-    programs.fish.enable  = true;
+    programs.fish.enable = true;
     programs.dconf.enable = true;
 
     fonts = {
@@ -83,7 +91,7 @@ in
         enable = true;
         defaultFonts = {
           sansSerif = [ "Inter" "Noto Sans" ];
-          serif     = [ "Noto Serif" ];
+          serif = [ "Noto Serif" ];
           monospace = [ "JetBrainsMono Nerd Font" ];
         };
       };
@@ -91,18 +99,6 @@ in
     };
 
     xdg.portal.enable = true;
-
-    environment.systemPackages = with pkgs; [
-      git
-      curl
-      google-chrome
-      nautilus
-      rose-pine-cursor
-      papirus-icon-theme
-      adw-gtk3
-      adwaita-icon-theme
-      libsForQt5.qt5ct
-    ];
 
     zramSwap = { enable = true; algorithm = "zstd"; };
   };

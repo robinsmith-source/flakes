@@ -19,11 +19,15 @@
       url = "github:noctalia-dev/noctalia-qs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+    };
   };
 
-  outputs = { self, nixpkgs, home-manager, noctalia, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, noctalia, nixvim, ... }@inputs:
     let
-      system   = "x86_64-linux";
+      system = "x86_64-linux";
       username = "robin";
 
       mkWorkstation = { deviceModule, hmImports }:
@@ -35,7 +39,7 @@
             home-manager.nixosModules.home-manager
             {
               home-manager = {
-                useGlobalPkgs   = true;
+                useGlobalPkgs = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
                 extraSpecialArgs = { inherit inputs username; };
@@ -49,27 +53,23 @@
             }
           ];
         };
+      hmShared = [
+        noctalia.homeModules.default
+        ./home/common.nix
+        ./home/niri.nix
+        ./modules/programs
+      ];
     in
     {
       nixosConfigurations = {
         laptop = mkWorkstation {
           deviceModule = ./devices/laptop;
-          hmImports = [
-            noctalia.homeModules.default
-            ./home/common.nix
-            ./home/fish.nix
-            ./home/niri.nix
-          ];
+          hmImports = hmShared;
         };
 
         desktop = mkWorkstation {
           deviceModule = ./devices/desktop;
-          hmImports = [
-            noctalia.homeModules.default
-            ./home/common.nix
-            ./home/fish.nix
-            ./home/niri.nix
-          ];
+          hmImports = hmShared;
         };
       };
     };

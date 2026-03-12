@@ -1,69 +1,94 @@
 { username, hostName, ... }: {
   programs.noctalia-shell = {
-    enable         = true;
+    enable = true;
     systemd.enable = true;
+
+    plugins = {
+      sources = [
+        {
+          enabled = true;
+          name = "Official Noctalia Plugins";
+          url = "https://github.com/noctalia-dev/noctalia-plugins";
+        }
+      ];
+      states = {
+        tailscale = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        privacy-indicator = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+        screen-recorder = {
+          enabled = true;
+          sourceUrl = "https://github.com/noctalia-dev/noctalia-plugins";
+        };
+      };
+      version = 2;
+    };
 
     settings = {
       bar = {
-        position            = "top";
-        barType             = "simple";
-        density             = "default";
-        displayMode         = "always_visible";
-        backgroundOpacity   = 0.93;
-        contentPadding      = 2;
-        showCapsule         = false;
-        capsuleOpacity      = 0.26;
-        floating            = false;
-        outerCorners        = true;
-        marginHorizontal    = 4;
-        marginVertical      = 4;
-        mouseWheelAction    = "content";
-        rightClickAction    = "controlCenter";
+        position = "top";
+        barType = "simple";
+        density = "default";
+        displayMode = "always_visible";
+        backgroundOpacity = 0.93;
+        contentPadding = 2;
+        showCapsule = false;
+        capsuleOpacity = 0.26;
+        floating = false;
+        outerCorners = true;
+        marginHorizontal = 4;
+        marginVertical = 4;
+        mouseWheelAction = "content";
+        rightClickAction = "controlCenter";
         widgets = {
           left = [
             {
               id = "Clock";
               formatHorizontal = "HH:mm ddd, MMM dd";
-              formatVertical   = "HH mm - dd MM";
-              customFont       = "JetBrainsMono NF";
+              formatVertical = "HH mm - dd MM";
+              customFont = "JetBrainsMono NF";
             }
             {
               id = "SystemMonitor";
-              compactMode       = true;
-              showCpuUsage      = true;
-              showCpuTemp       = true;
-              showMemoryUsage   = true;
-              showSwapUsage     = true;
-              useMonospaceFont  = true;
+              compactMode = true;
+              showCpuUsage = true;
+              showCpuTemp = true;
+              showMemoryUsage = true;
+              showSwapUsage = true;
+              useMonospaceFont = true;
             }
             {
               id = "MediaMini";
-              compactMode     = true;
-              hideMode        = "hidden";
-              maxWidth        = 200;
-              scrollingMode   = "hover";
-              showAlbumArt    = true;
+              compactMode = true;
+              hideMode = "hidden";
+              maxWidth = 200;
+              scrollingMode = "hover";
+              showAlbumArt = true;
               showProgressRing = true;
             }
             {
               id = "ActiveWindow";
-              hideMode      = "hidden";
-              maxWidth      = 160;
+              hideMode = "hidden";
+              maxWidth = 160;
               scrollingMode = "hover";
-              showIcon      = true;
+              showIcon = true;
             }
           ];
           center = [
             {
               id = "Workspace";
               enableScrollWheel = true;
-              focusedColor      = "primary";
-              fontWeight        = "bold";
-              hideUnoccupied    = true;
-              labelMode         = "index";
-              pillSize          = 0.7;
-              showApplications  = true;
-              showBadge         = true;
+              focusedColor = "primary";
+              fontWeight = "bold";
+              hideUnoccupied = true;
+              labelMode = "index";
+              pillSize = 0.7;
+              showApplications = true;
+              showBadge = true;
               showLabelsOnlyWhenOccupied = true;
             }
           ];
@@ -71,14 +96,14 @@
             { id = "Tray"; }
             { id = "NotificationHistory"; }
             { id = "plugin:tailscale"; }
-            { id = "Network";    displayMode = "onhover"; }
-            { id = "Bluetooth";  displayMode = "onhover"; }
+            { id = "Network"; displayMode = "onhover"; }
+            { id = "Bluetooth"; displayMode = "onhover"; }
             {
               id = "Battery";
-              displayMode       = "graphic-clean";
+              displayMode = "graphic-clean";
               hideIfNotDetected = true;
             }
-            { id = "Volume";     displayMode = "onhover"; }
+            { id = "Volume"; displayMode = "onhover"; }
             { id = "Brightness"; displayMode = "onhover"; }
             { id = "plugin:privacy-indicator"; }
             { id = "plugin:screen-recorder"; }
@@ -87,27 +112,27 @@
       };
 
       general = {
-        avatarImage            = "/home/${username}/.face";
-        clockFormat            = "hh\\nmm";
-        clockStyle             = "custom";
-        compactLockScreen      = true;
-        enableBlurBehind       = true;
+        avatarImage = "/home/${username}/.face";
+        clockFormat = "hh\\nmm";
+        clockStyle = "custom";
+        compactLockScreen = true;
+        enableBlurBehind = true;
         enableLockScreenCountdown = true;
-        enableShadows          = false;
-        lockOnSuspend          = true;
-        lockScreenAnimations   = true;
-        lockScreenBlur         = 0.4;
-        lockScreenTint         = 0.4;
-        passwordChars          = true;
-        shadowDirection        = "center";
-        shadowOffsetX          = 0;
-        shadowOffsetY          = 0;
+        enableShadows = false;
+        lockOnSuspend = true;
+        lockScreenAnimations = true;
+        lockScreenBlur = 0.4;
+        lockScreenTint = 0.4;
+        passwordChars = true;
+        shadowDirection = "center";
+        shadowOffsetX = 0;
+        shadowOffsetY = 0;
         showChangelogOnStartup = true;
-        telemetryEnabled       = false;
+        telemetryEnabled = false;
         keybinds = {
-          keyUp    = [ "Up"    "Alt+K" ];
-          keyDown  = [ "Down"  "Alt+J" ];
-          keyLeft  = [ "Left"  "Alt+H" ];
+          keyUp = [ "Up" "Alt+K" ];
+          keyDown = [ "Down" "Alt+J" ];
+          keyLeft = [ "Left" "Alt+H" ];
           keyRight = [ "Right" "Alt+L" ];
           keyEnter = [ "Return" "Enter" ];
           keyEscape = [ "Esc" ];
@@ -116,38 +141,38 @@
       };
 
       ui = {
-        fontDefault            = "JetBrainsMono NF";
-        fontFixed              = "JetBrainsMono NF";
+        fontDefault = "JetBrainsMono NF";
+        fontFixed = "JetBrainsMono NF";
         panelBackgroundOpacity = 0.93;
-        panelsAttachedToBar    = true;
+        panelsAttachedToBar = true;
         scrollbarAlwaysVisible = true;
-        settingsPanelMode      = "window";
+        settingsPanelMode = "window";
       };
 
       location = {
-        name                    = "Stuttgart";
-        useFahrenheit           = false;
-        use12hourFormat         = false;
-        firstDayOfWeek          = -1;
-        analogClockInCalendar   = true;
-        hideWeatherCityName     = true;
+        name = "Stuttgart";
+        useFahrenheit = false;
+        use12hourFormat = false;
+        firstDayOfWeek = -1;
+        analogClockInCalendar = true;
+        hideWeatherCityName = true;
         showWeekNumberInCalendar = true;
-        weatherShowEffects      = false;
+        weatherShowEffects = false;
       };
 
       appLauncher = {
-        terminalCommand        = "alacritty -e";
-        position               = "center";
-        sortByMostUsed         = true;
-        viewMode               = "list";
+        terminalCommand = "alacritty -e";
+        position = "center";
+        sortByMostUsed = true;
+        viewMode = "list";
         enableClipboardHistory = true;
       };
 
       colorSchemes = {
-        darkMode           = true;
+        darkMode = true;
         useWallpaperColors = true;
-        predefinedScheme   = "Ayu";
-        generationMethod   = "vibrant";
+        predefinedScheme = "Ayu";
+        generationMethod = "vibrant";
       };
 
       controlCenter = {
@@ -177,37 +202,37 @@
       };
 
       dock = {
-        enabled        = true;
-        dockType       = "static";
-        displayMode    = "always_visible";
-        position       = "bottom";
-        size           = 1.2;
-        floatingRatio  = 0.5;
-        groupApps      = true;
+        enabled = true;
+        dockType = "static";
+        displayMode = "always_visible";
+        position = "bottom";
+        size = 1.2;
+        floatingRatio = 0.5;
+        groupApps = true;
         inactiveIndicators = true;
-        pinnedApps     = [ "google-chrome" ];
-        pinnedStatic   = true;
+        pinnedApps = [ "google-chrome" ];
+        pinnedStatic = true;
       };
 
       wallpaper = {
-        enabled                  = true;
-        directory                = "/home/${username}/Pictures/Wallpapers";
-        fillMode                 = "center";
+        enabled = true;
+        directory = "/home/${username}/Pictures/Wallpapers";
+        fillMode = "center";
         setWallpaperOnAllMonitors = true;
-        sortOrder                = "date_desc";
-        transitionType           = "wipe";
-        skipStartupTransition    = true;
-        overviewBlur             = 0.8;
+        sortOrder = "date_desc";
+        transitionType = "wipe";
+        skipStartupTransition = true;
+        overviewBlur = 0.8;
       };
 
       notifications = { enabled = true; location = "top"; };
-      osd           = { location = "bottom"; autoHideMs = 1500; };
+      osd = { location = "bottom"; autoHideMs = 1500; };
 
       idle = {
-        enabled          = true;
+        enabled = true;
         screenOffTimeout = 600;
-        lockTimeout      = 660;
-        suspendTimeout   = 1800;
+        lockTimeout = 660;
+        suspendTimeout = 1800;
       };
 
       templates = {
@@ -225,24 +250,31 @@
           { enabled = true; id = "cava"; }
         ];
       };
+      user-templates = ''
+        [templates.nvim-base16]
+        input_path = "~/.config/nvim/lua/matugen-template.lua"
+        output_path = "~/.config/nvim/lua/matugen.lua"
+        post_hook = 'pkill -SIGUSR1 nvim'
+      '';
     };
   };
 
-  xdg.configFile = let
-    niriBase = ../config/niri;
-    niriHost = ../config/niri/hosts + "/${hostName}";
-  in {
-    "niri/config.kdl".source        = niriBase + "/config.kdl";
-    "niri/noctalia.kdl".source      = niriBase + "/noctalia.kdl";
-    "niri/cfg/autostart.kdl".source = niriBase + "/cfg/autostart.kdl";
-    "niri/cfg/keybinds.kdl".source  = niriBase + "/cfg/keybinds.kdl";
-    "niri/cfg/events.kdl".source    = niriBase + "/cfg/events.kdl";
-    "niri/cfg/gestures.kdl".source  = niriBase + "/cfg/gestures.kdl";
-    "niri/cfg/layout.kdl".source    = niriBase + "/cfg/layout.kdl";
-    "niri/cfg/rules.kdl".source     = niriBase + "/cfg/rules.kdl";
-    "niri/cfg/misc.kdl".source      = niriBase + "/cfg/misc.kdl";
-    "niri/cfg/animation.kdl".source = niriBase + "/cfg/animation.kdl";
-    "niri/cfg/display.kdl".source   = niriHost + "/display.kdl";
-    "niri/cfg/input.kdl".source     = niriHost + "/input.kdl";
-  };
+  xdg.configFile =
+    let
+      niriBase = ../config/niri;
+    in
+    {
+      "niri/config.kdl".source = niriBase + "/config.kdl";
+      "niri/noctalia.kdl".source = niriBase + "/noctalia.kdl";
+      "niri/cfg/autostart.kdl".source = niriBase + "/cfg/autostart.kdl";
+      "niri/cfg/keybinds.kdl".source = niriBase + "/cfg/keybinds.kdl";
+      "niri/cfg/events.kdl".source = niriBase + "/cfg/events.${hostName}.kdl";
+      "niri/cfg/gestures.kdl".source = niriBase + "/cfg/gestures.kdl";
+      "niri/cfg/layout.kdl".source = niriBase + "/cfg/layout.${hostName}.kdl";
+      "niri/cfg/rules.kdl".source = niriBase + "/cfg/rules.kdl";
+      "niri/cfg/misc.kdl".source = niriBase + "/cfg/misc.kdl";
+      "niri/cfg/animation.kdl".source = niriBase + "/cfg/animation.kdl";
+      "niri/cfg/display.kdl".source = niriBase + "/cfg/display.${hostName}.kdl";
+      "niri/cfg/input.kdl".source = niriBase + "/cfg/input.${hostName}.kdl";
+    };
 }

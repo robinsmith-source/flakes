@@ -1,18 +1,16 @@
 input {
-    keyboard {
-        xkb {
-            layout "us,de"
-            variant "intl"
-            options "compose:caps,grp:alts_toggle"
-        }
-        numlock
-    }
-
-    touchpad {
-        tap
-        natural-scroll
-    }
-
-    focus-follows-mouse
-    workspace-auto-back-and-forth
+keyboard {
+xkb {
+layout "us,de"
+variant "intl"
+options "compose:caps,grp:alts_toggle"
+}
+numlock
+}
+touchpad {
+tap
+natural-scroll
+}
+focus-follows-mouse
+workspace-auto-back-and-forth
 }

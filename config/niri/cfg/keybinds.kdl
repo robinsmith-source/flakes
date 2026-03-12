@@ -1,5 +1,4 @@
 binds {
-
     Mod+Shift+ESCAPE { show-hotkey-overlay; }
 
     // ─── Applications ───

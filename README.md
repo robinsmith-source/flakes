@@ -31,24 +31,23 @@ modules/
   baseline.nix                     # workstation.baseline: nix, boot, fonts, audio, BT
   niri.nix                         # workstation.niri: greetd, portals, Wayland env
   hardware-amd.nix                 # workstation.hardware-amd: amdgpu, ROCm
+  virtualization.nix              # workstation.virtualization: VM testing overrides
 home/
-  common.nix                       # Base HM: GTK, Qt, cursor, alacritty, neovim, git, btop
-  fish.nix                         # Fish shell + starship
+  common.nix                       # Base HM: GTK, Qt, cursor, dconf, git, btop
   niri.nix                         # Niri + Noctalia HM: settings, KDL deployment
+  modules/                         # Optional programs (enable per machine)
+    fish.nix      neovim.nix       alacritty.nix    cava.nix    fastfetch.nix    apps.nix
 config/
   niri/
     config.kdl                     # Root config — includes from cfg/
     noctalia.kdl                   # Noctalia color overrides
-    cfg/                           # Shared niri KDL
+    cfg/                           # Shared + per-machine niri KDL
       autostart.kdl                keybinds.kdl
-      layout.kdl                   rules.kdl
-      gestures.kdl                 events.kdl
+      layout.*.kdl                 rules.kdl
+      gestures.kdl                 events.*.kdl
       animation.kdl                misc.kdl
-    hosts/                         # Per-machine niri overrides
-      laptop/
-        display.kdl                input.kdl
-      desktop/
-        display.kdl                input.kdl
+      display.laptop.kdl           input.laptop.kdl
+      display.desktop.kdl          input.desktop.kdl
   nvim/                            # LazyVim config + matugen base16
   noctalia/                        # user-templates.toml
   fastfetch/                       # config.jsonc
@@ -70,13 +69,14 @@ imports = [
 ];
 
 workstation = {
-  baseline.enable     = true;
-  niri.enable         = true;
+  baseline.enable = true;
+  niri.enable = true;
   hardware-amd.enable = true;
+  virtualization.enable = true;  # laptop: VM testing overrides
 };
 ```
 
-`flake.nix` composes HM imports per device — swap `niri.nix` for another DE:
+`flake.nix` composes HM imports per device — add/remove modules per machine:
 
 ```nix
 laptop = mkWorkstation {
@@ -84,8 +84,20 @@ laptop = mkWorkstation {
   hmImports = [
     noctalia.homeModules.default
     ./home/common.nix
-    ./home/fish.nix
-    ./home/niri.nix       # swap for ./home/kde.nix etc.
+    ./home/niri.nix
+    ./home/modules/neovim.nix
+    ./home/modules/alacritty.nix
+    ./home/modules/fastfetch.nix
+    ./home/modules/apps.nix
+  ];
+};
+
+desktop = mkWorkstation {
+  ...
+  hmImports = [
+    ...
+    ./home/modules/cava.nix      # desktop: audio visualizer
+    ...
   ];
 };
 ```
@@ -137,9 +149,9 @@ cp /mnt/etc/nixos/hardware-configuration.nix devices/laptop/hardware-configurati
 |------|----------------|
 | `flake.nix` | `username` |
 | `modules/baseline.nix` | `time.timeZone`, `i18n.defaultLocale` |
-| `home/common.nix` | `programs.git.settings.user.*` |
-| `config/niri/hosts/laptop/display.kdl` | monitor name, mode, scale |
-| `config/niri/hosts/laptop/input.kdl` | keyboard layout |
+| `home/modules/git.nix` | `programs.git.settings.user.*` |
+| `config/niri/cfg/display.laptop.kdl` | monitor name, mode, scale |
+| `config/niri/cfg/input.laptop.kdl` | keyboard layout |
 
 ### 7 — Install
 
@@ -167,16 +179,22 @@ passwd robin   # set user password after first boot
 
 1. Create `devices/<hostname>/default.nix` — import modules and enable them
 2. Add `hardware-configuration.nix` from `nixos-generate-config`
-3. Add per-machine niri configs in `config/niri/hosts/<hostname>/`
+3. Add per-machine niri configs: `config/niri/cfg/display.<hostname>.kdl`, `input.<hostname>.kdl`, etc.
 4. Add a new entry in `flake.nix`:
 
 ```nix
 newbox = mkWorkstation {
   deviceModule = ./devices/newbox;
   hmImports = [
+    noctalia.homeModules.default
     ./home/common.nix
-    ./home/fish.nix
+    ./home/modules/fish.nix
     ./home/niri.nix
+    ./home/modules/neovim.nix
+    ./home/modules/alacritty.nix
+    ./home/modules/fastfetch.nix
+    ./home/modules/apps.nix
+    # add ./home/modules/cava.nix for desktop
   ];
 };
 ```

@@ -1,5 +1,5 @@
 output "eDP-1" {
-    mode "2880x1800@90"
-    scale 1.5
-    variable-refresh-rate on-demand=true
+mode "2880x1800@90"
+scale 1.5
+variable-refresh-rate on-demand=true
 }

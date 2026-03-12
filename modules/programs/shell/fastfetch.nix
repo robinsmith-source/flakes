@@ -1,0 +1,48 @@
+{ ... }: {
+  programs.fastfetch = {
+    enable = true;
+    settings = {
+      logo = {
+        type = "small";
+        color = {
+          "1" = "green";
+          "2" = "cyan";
+        };
+        padding = {
+          top = 1;
+          left = 2;
+        };
+      };
+      display = {
+        separator = " ➜ ";
+        color.keys = "magenta";
+      };
+      modules = [
+        {
+          type = "title";
+          format = "{user-name}@{host-name}";
+          color = {
+            user = "green";
+            at = "white";
+            host = "cyan";
+          };
+        }
+        "break"
+        { type = "os"; key = "󰣇 SYSTEM "; keyColor = "green"; }
+        { type = "kernel"; key = "󰒋 KERNEL "; keyColor = "green"; }
+        { type = "uptime"; key = "󱎫 UPTIME "; keyColor = "green"; }
+        { type = "packages"; key = "󰏖 PACKS  "; keyColor = "green"; }
+        "break"
+        { type = "wm"; key = "󱂬 WINDOW "; keyColor = "cyan"; }
+        { type = "terminal"; key = "󰆍 SHELL  "; keyColor = "cyan"; }
+        { type = "display"; key = "󰍹 RESO   "; keyColor = "cyan"; }
+        "break"
+        { type = "cpu"; key = "󰻠 CPU    "; keyColor = "yellow"; }
+        { type = "gpu"; key = "󰢮 GPU    "; keyColor = "yellow"; }
+        { type = "memory"; key = "󰍛 MEMORY "; keyColor = "yellow"; }
+        "break"
+        "colors"
+      ];
+    };
+  };
+}

@@ -18,16 +18,16 @@ in
     security.pam.services.greetd.enableGnomeKeyring = true;
 
     environment.sessionVariables = {
-      NIXOS_OZONE_WL                = "1";
-      ELECTRON_OZONE_PLATFORM_HINT  = "auto";
-      MOZ_ENABLE_WAYLAND            = "1";
-      QT_QPA_PLATFORM               = "wayland";
+      NIXOS_OZONE_WL = "1";
+      ELECTRON_OZONE_PLATFORM_HINT = "auto";
+      MOZ_ENABLE_WAYLAND = "1";
+      QT_QPA_PLATFORM = "wayland";
       QT_WAYLAND_DISABLE_WINDOWDECORATION = "1";
-      QT_QPA_PLATFORMTHEME          = "gtk3";
-      SDL_VIDEODRIVER               = "wayland";
-      CLUTTER_BACKEND               = "wayland";
-      XDG_SESSION_TYPE              = "wayland";
-      XDG_CURRENT_DESKTOP           = "niri";
+      QT_QPA_PLATFORMTHEME = "gtk3";
+      SDL_VIDEODRIVER = "wayland";
+      CLUTTER_BACKEND = "wayland";
+      XDG_SESSION_TYPE = "wayland";
+      XDG_CURRENT_DESKTOP = "niri";
     };
 
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
