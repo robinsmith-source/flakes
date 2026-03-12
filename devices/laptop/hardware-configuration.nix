@@ -1,4 +1,4 @@
-# !! Replace this file with the output of: nixos-generate-config --show-hardware-config !!
+# Replace with: nixos-generate-config --show-hardware-config
 { modulesPath, ... }: {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 

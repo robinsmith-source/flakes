@@ -1,3 +1,4 @@
+include "./cfg/autostart.kdl"
 include "./cfg/keybinds.kdl"
 include "./cfg/events.kdl"
 include "./cfg/gestures.kdl"

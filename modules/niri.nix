@@ -1,28 +1,13 @@
-{
-  config,
-  lib,
-  pkgs,
-  inputs,
-  ...
-}:
+{ config, lib, pkgs, ... }:
 let
-  cfg = config.workstation;
+  cfg = config.workstation.niri;
 in
 {
-  options.workstation = {
-    niri.enable = lib.mkEnableOption "Niri scrollable-tiling Wayland compositor with Noctalia shell";
-  };
+  options.workstation.niri.enable = lib.mkEnableOption "Niri scrollable-tiling Wayland compositor with Noctalia shell";
 
-  config = lib.mkIf cfg.niri.enable {
-    # niri-flake NixOS module handles: polkit (KDE agent), xdg portals,
-    # GNOME keyring, dconf, opengl, default fonts, binary cache.
+  config = lib.mkIf cfg.enable {
     programs.niri.enable = true;
 
-    # Noctalia prerequisites (per https://docs.noctalia.dev/getting-started/nixos/)
-    # networkmanager, bluetooth — already in common.nix
-    services.upower.enable = true;
-
-    # Display manager
     services.greetd = {
       enable = true;
       settings.default_session = {
@@ -45,7 +30,6 @@ in
       XDG_CURRENT_DESKTOP           = "niri";
     };
 
-    # xdg-desktop-portal-gtk needed alongside the -gnome one from niri-flake
     xdg.portal.extraPortals = [ pkgs.xdg-desktop-portal-gtk ];
 
     environment.systemPackages = with pkgs; [

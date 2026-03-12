@@ -9,40 +9,33 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # CachyOS kernel — LTS with BORE scheduler, performance patches + binary cache
-    # Do NOT override its nixpkgs — kernel patches must match the pinned version.
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
-
-    # Niri — scrollable-tiling Wayland compositor (NixOS/HM modules + binary cache)
     niri.url = "github:sodiboo/niri-flake";
 
-    # Noctalia shell (Quickshell-based desktop shell for niri)
-    noctalia-qs = {
-      url = "github:noctalia-dev/noctalia-qs";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.noctalia-qs.follows = "noctalia-qs";
     };
+
+    noctalia-qs = {
+      url = "github:noctalia-dev/noctalia-qs";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = { self, nixpkgs, home-manager, niri, noctalia, ... }@inputs:
     let
+      system   = "x86_64-linux";
       username = "robin";
 
-      mkSystem = { hostname, system ? "x86_64-linux", extraModules ? [] }:
+      mkWorkstation = { deviceModule, hmImports }:
         nixpkgs.lib.nixosSystem {
           inherit system;
           specialArgs = { inherit inputs username; };
           modules = [
-            home-manager.nixosModules.home-manager
+            deviceModule
             niri.nixosModules.niri
-            ./hosts/${hostname}
-            ./modules/nixos/common.nix
-            ./modules/nixos/desktop
-            ./modules/nixos/hardware/amd.nix
+            home-manager.nixosModules.home-manager
             {
               home-manager = {
                 useGlobalPkgs   = true;
@@ -54,21 +47,33 @@
                     _module.args.hostName = osConfig.networking.hostName;
                   })
                 ];
-                users.${username} = {
-                  imports = [
-                    noctalia.homeModules.default
-                    ./modules/home
-                  ];
-                };
+                users.${username}.imports = hmImports;
               };
             }
-          ] ++ extraModules;
+          ];
         };
     in
     {
       nixosConfigurations = {
-        laptop  = mkSystem { hostname = "laptop"; };
-        desktop = mkSystem { hostname = "desktop"; };
+        laptop = mkWorkstation {
+          deviceModule = ./devices/laptop;
+          hmImports = [
+            noctalia.homeModules.default
+            ./home/common.nix
+            ./home/fish.nix
+            ./home/niri.nix
+          ];
+        };
+
+        desktop = mkWorkstation {
+          deviceModule = ./devices/desktop;
+          hmImports = [
+            noctalia.homeModules.default
+            ./home/common.nix
+            ./home/fish.nix
+            ./home/niri.nix
+          ];
+        };
       };
     };
 }

@@ -1,15 +1,22 @@
 { pkgs, username, ... }: {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ../../modules/baseline.nix
+    ../../modules/niri.nix
+    ../../modules/hardware-amd.nix
+  ];
 
   networking.hostName = "desktop";
 
   boot.loader.limine.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  # Ryzen 7 7800X3D + Radeon RX 7800XT (RDNA 3)
   boot.kernelParams = [ "amdgpu.sg_display=0" ];
 
-  workstation.niri.enable = true;
+  workstation = {
+    baseline.enable     = true;
+    niri.enable         = true;
+    hardware-amd.enable = true;
+  };
 
   users.users.${username} = {
     isNormalUser = true;

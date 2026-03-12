@@ -1,15 +1,21 @@
 { pkgs, username, ... }: {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    ../../modules/baseline.nix
+    ../../modules/niri.nix
+    ../../modules/hardware-amd.nix
+  ];
 
   networking.hostName = "laptop";
 
   boot.loader.limine.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Lenovo Ideapad 5 Pro 14ARH7 — AMD Ryzen 6000 (Rembrandt), Radeon 680M iGPU
-  hardware.cpu.amd.updateMicrocode = true;
-
-  workstation.niri.enable = true;
+  workstation = {
+    baseline.enable     = true;
+    niri.enable         = true;
+    hardware-amd.enable = true;
+  };
 
   services.power-profiles-daemon.enable = true;
 
@@ -26,14 +32,13 @@
     extraGroups  = [ "wheel" "video" "audio" "networkmanager" "input" ];
   };
 
-  # VM testing overrides (only applies to nixos-rebuild build-vm)
-  virtualisation.vmVariant = {
-    virtualisation = {
-      memorySize = 4096;
-      cores      = 4;
-      diskSize   = 20480;
-    };
+  virtualisation.vmVariant.virtualisation = {
+    memorySize = 4096;
+    cores      = 4;
+    diskSize   = 20480;
   };
+
+  virtualisation.virtualbox.guest.enable = false;
 
   system.stateVersion = "24.11";
 }

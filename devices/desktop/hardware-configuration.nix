@@ -1,5 +1,4 @@
-# Replace this file with: nixos-generate-config --show-hardware-config
-# Bootloader config lives in default.nix — safe to overwrite this file.
+# Replace with: nixos-generate-config --show-hardware-config
 { modulesPath, ... }: {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 

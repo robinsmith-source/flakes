@@ -1,0 +1,13 @@
+input {
+    keyboard {
+        xkb {
+            layout "us,de"
+            variant "intl"
+            options "compose:caps,grp:alts_toggle"
+        }
+        numlock
+    }
+
+    focus-follows-mouse
+    workspace-auto-back-and-forth
+}
