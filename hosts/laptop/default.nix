@@ -13,9 +13,9 @@
 
   services.power-profiles-daemon.enable = true;
 
-  services.logind = {
-    lidSwitch              = "suspend";
-    lidSwitchExternalPower = "lock";
+  services.logind.settings.Login = {
+    HandleLidSwitch              = "suspend";
+    HandleLidSwitchExternalPower = "lock";
   };
 
   hardware.acpilight.enable = true;
@@ -24,6 +24,15 @@
     isNormalUser = true;
     shell        = pkgs.fish;
     extraGroups  = [ "wheel" "video" "audio" "networkmanager" "input" ];
+  };
+
+  # VM testing overrides (only applies to nixos-rebuild build-vm)
+  virtualisation.vmVariant = {
+    virtualisation = {
+      memorySize = 4096;
+      cores      = 4;
+      diskSize   = 20480;
+    };
   };
 
   system.stateVersion = "24.11";

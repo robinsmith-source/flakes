@@ -357,10 +357,10 @@
 
   # ── Git ──────────────────────────────────────────────────────────────────
   programs.git = {
-    enable    = true;
-    userName  = "Robin Smith";
-    userEmail = "your@email.com";       # !! change me !!
+    enable = true;
     settings = {
+      user.name  = "Robin Smith";
+      user.email = "your@email.com";    # !! change me !!
       init.defaultBranch = "main";
       core.editor = "nvim";
     };
