@@ -15,7 +15,6 @@
   # Configured entirely through home-manager per:
   #   https://docs.noctalia.dev/getting-started/nixos/
   # The systemd user service starts noctalia — do NOT also spawn it in
-  # niri's autostart.kdl or enable services.noctalia-shell in NixOS.
   programs.noctalia-shell = {
     enable         = true;
     systemd.enable = true;
@@ -389,7 +388,6 @@
     # Niri
     "niri/config.kdl".source        = ../../config/niri/config.kdl;
     "niri/noctalia.kdl".source      = ../../config/niri/noctalia.kdl;
-    "niri/cfg/autostart.kdl".source = ../../config/niri/cfg/autostart.kdl;
     "niri/cfg/keybinds.kdl".source  = ../../config/niri/cfg/keybinds.kdl;
     "niri/cfg/events.kdl".source    = ../../config/niri/cfg/events.kdl;
     "niri/cfg/gestures.kdl".source  = ../../config/niri/cfg/gestures.kdl;

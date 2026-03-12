@@ -198,7 +198,6 @@ config/
     config.kdl                         # Root config — includes from cfg/
     noctalia.kdl                       # Niri colors (Noctalia scheme)
     cfg/
-      autostart.kdl                    # Startup apps (noctalia via systemd)
       keybinds.kdl                     # All keybindings (noctalia IPC)
       display.kdl                      # Monitor outputs
       input.kdl                        # Keyboard layout, touchpad
