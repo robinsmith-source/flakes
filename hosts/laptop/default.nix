@@ -3,6 +3,9 @@
 
   networking.hostName = "laptop";
 
+  boot.loader.limine.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   # Lenovo Ideapad 5 Pro 14ARH7 — AMD Ryzen 6000 (Rembrandt), Radeon 680M iGPU
   hardware.cpu.amd.updateMicrocode = true;
 

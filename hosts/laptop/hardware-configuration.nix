@@ -1,9 +1,8 @@
-# !! Replace this file with the output of: nixos-generate-config --show-hardware-config !!
-# Run on the target machine and paste the result here, then remove this comment.
+# Replace this file with: nixos-generate-config --show-hardware-config
+# Bootloader config lives in default.nix — safe to overwrite this file.
 { modulesPath, ... }: {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  # Placeholder — replace with nixos-generate-config output
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
@@ -16,9 +15,5 @@
 
   swapDevices = [];
 
-  boot.loader.limine.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
-  # Set correct platform
   nixpkgs.hostPlatform = "x86_64-linux";
 }

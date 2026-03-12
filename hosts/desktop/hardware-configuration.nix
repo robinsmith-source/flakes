@@ -14,8 +14,5 @@
 
   swapDevices = [];
 
-  boot.loader.limine.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   nixpkgs.hostPlatform = "x86_64-linux";
 }

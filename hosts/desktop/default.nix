@@ -3,6 +3,9 @@
 
   networking.hostName = "desktop";
 
+  boot.loader.limine.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   # Ryzen 7 7800X3D + Radeon RX 7800XT (RDNA 3)
   boot.kernelParams = [ "amdgpu.sg_display=0" ];
 
