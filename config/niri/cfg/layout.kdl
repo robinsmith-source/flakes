@@ -1,0 +1,29 @@
+layout {
+    gaps 6
+    center-focused-column "never"
+    always-center-single-column
+
+    focus-ring {
+        width 2
+    }
+
+    background-color "transparent"
+
+    default-column-width { proportion 0.5; }
+
+    preset-column-widths {
+        proportion 0.33333
+        proportion 0.5
+        proportion 0.66667
+    }
+
+    struts {}
+}
+
+window-rule {
+    match app-id="zen$"
+    match app-id="firefox$"
+    match app-id="chrome$"
+    match app-id="discord$"
+    open-maximized true
+}

@@ -9,6 +9,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # CachyOS kernel — LTS with BORE scheduler, performance patches + binary cache
+    # Do NOT override its nixpkgs — kernel patches must match the pinned version.
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+
+    # Niri — scrollable-tiling Wayland compositor (NixOS/HM modules + binary cache)
+    niri.url = "github:sodiboo/niri-flake";
+
     # Noctalia shell (Quickshell-based desktop shell for niri)
     noctalia-qs = {
       url = "github:noctalia-dev/noctalia-qs";
@@ -21,9 +28,8 @@
     };
   };
 
-  outputs = { self, nixpkgs, home-manager, noctalia, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, niri, noctalia, ... }@inputs:
     let
-      # !! Change to your username !!
       username = "robin";
 
       mkSystem = { hostname, system ? "x86_64-linux", extraModules ? [] }:
@@ -32,17 +38,22 @@
           specialArgs = { inherit inputs username; };
           modules = [
             home-manager.nixosModules.home-manager
-            noctalia.nixosModules.default
+            niri.nixosModules.niri
             ./hosts/${hostname}
             ./modules/nixos/common.nix
             ./modules/nixos/desktop
             ./modules/nixos/hardware/amd.nix
             {
               home-manager = {
-                useGlobalPkgs = true;
+                useGlobalPkgs   = true;
                 useUserPackages = true;
                 backupFileExtension = "backup";
                 extraSpecialArgs = { inherit inputs username; };
+                sharedModules = [
+                  ({ osConfig, ... }: {
+                    _module.args.hostName = osConfig.networking.hostName;
+                  })
+                ];
                 users.${username} = {
                   imports = [
                     noctalia.homeModules.default
@@ -58,7 +69,6 @@
       nixosConfigurations = {
         laptop  = mkSystem { hostname = "laptop"; };
         desktop = mkSystem { hostname = "desktop"; };
-        hyperv  = mkSystem { hostname = "hyperv"; };
       };
     };
 }
