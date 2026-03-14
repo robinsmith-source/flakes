@@ -12,7 +12,6 @@
   workstation = {
     baseline.enable = true;
     niri.enable = true;
-    virtualization.enable = true;
   };
 
   services.power-profiles-daemon.enable = true;

@@ -17,7 +17,6 @@
     niri.enable = true;
     hardware-amd.enable = true;
     gaming.enable = true;
-    virtualization.enable = true;
   };
 
   users.users.${username} = {
